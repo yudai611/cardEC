@@ -1,0 +1,162 @@
+/*main*/
+.main {
+    padding: 20px 6%;
+    margin: 0 auto;
+}
+
+.main-inner {
+    display: flex;
+    column-gap: 3%;
+}
+
+.main-left {
+    width: 75%;
+}
+
+.content-hed {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.add-btn {
+    background-color: #ff590d;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.7rem;
+}
+
+.add-btn:hover {
+    background-color: #ff7230;
+}
+
+.main-left h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.collection-table {
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+th, td {
+    border-right: solid 1px #000;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+thead tr {
+    background-color: #ff3b3b;
+}
+
+thead th {
+    padding: 6px 0;
+}
+
+thead tr th p {
+    color: #fff;
+}
+
+tbody td {
+    text-align: center;
+}
+
+tbody tr:nth-child(2n + 1) {
+    background-color: #e6e6e6;
+}
+
+tbody tr:nth-child(2n) {
+    background-color: #d8d8d8;
+}
+
+.card-name {
+    width: 35%;
+}
+
+.rarity {
+    width: 15%;
+}
+
+.product-num {
+    width: 15%;
+}
+
+.price {
+    width: 25%;
+}
+
+.delete {
+    width: 10%;
+}
+
+.delete button {
+    background-color: #bb1e1e;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 1px 10px;
+    font-weight: bold;
+    border-radius: 10px;
+    letter-spacing: 3px;
+}
+
+.delete button:hover {
+    background-color: #cf3838;
+}
+
+.main-right {
+    width: 25%;
+}
+
+.price-sum-area {
+    background-color: #2cb601;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.price-sum-area p {
+    text-align: right;
+    color: #fff;
+    font-weight: bold;
+}
+
+.text {
+    font-size: 0.85rem;
+}
+
+.price-sum-text {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+/*ページネーション*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    column-gap: 5px;
+}
+
+.num-btn {
+    margin-right: 8px;
+}
+
+.num-btn:last-child {
+    margin-right: none;
+}
+
+
+
+
+
+
+
