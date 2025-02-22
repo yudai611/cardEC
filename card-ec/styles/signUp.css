@@ -1,0 +1,20 @@
+.form {
+    text-align: center;
+    margin-top: 180px;
+}
+
+.input {
+    border: solid 1px #000;
+    width: 300px;
+    height: 30px;
+    padding: 3px;
+    font-size: 14px;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    background-color: #ff2f2f;
+    color: #fff;
+    padding: 3px 20px;
+    border-radius: 3px;
+}
