@@ -64,3 +64,21 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+
+model Cards {
+  cardId          String    @id @default(cuid())
+  cardName        String
+  rarity          String
+  Purchase_price  String
+  Sales_price     String
+  cardImage       String
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now())
+}
+
+model User_Card {
+  userId      String    @id @default(cuid())
+  cardId      String
+  count       String
+  acquired_at DateTime  @default(now())
+}
