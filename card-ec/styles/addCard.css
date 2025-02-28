@@ -38,10 +38,35 @@ h2 {
 .card-item p {
     font-weight: bold;
     font-size: 0.8rem;
+    height: 40px;
 }
+
+.image-area {
+    height: 150px;
+}
+
 .card-image {
     display: inline-block;
     margin-bottom: 5px;
+}
+
+.price-area {
+    display: flex;
+    justify-content: center;
+    column-gap: 4px;
+    height: 20px;
+}
+
+.price-area .purchase {
+    color: #ff2d2d;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.price-area .sale {
+    color: #0066ff;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .add-btn {
@@ -55,4 +80,20 @@ h2 {
 
 .add-btn:hover {
     background-color: #379bf8;
+}
+
+/*ページネーション*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    column-gap: 5px;
+    margin-top: 12px;
+}
+
+.num-btn {
+    margin-right: 8px;
+}
+
+.num-btn:last-child {
+    margin-right: none;
 }
