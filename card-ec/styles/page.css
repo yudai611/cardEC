@@ -41,7 +41,6 @@
 .collection-table {
     table-layout: fixed;
     width: 100%;
-    margin-bottom: 12px;
 }
 
 th, td {
@@ -144,6 +143,7 @@ tbody tr:nth-child(2n) {
     display: flex;
     justify-content: center;
     column-gap: 5px;
+    margin-top: 12px;
 }
 
 .num-btn {
