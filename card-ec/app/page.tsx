@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Form from "./components/Form"
+import { Form } from "./components/Form"
 import Header from "./components/Header"
 import "../styles/page.css"
 
@@ -236,7 +236,7 @@ export default function Home() {
               <p className="text">前日比：+10000円</p>
               <p className="price-sum-text">合計：100000000円</p>
             </div>
-            <Form />
+            {/* <Form onServerResponse={(data: Card[]) => handleServerResponse(data)}/> */}
           </div>
         </div>
       </main>
