@@ -2,7 +2,7 @@ import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 
 
-export async function GET(req: Request) {
+export const GET = async (req: Request) => {
     const page = parseInt(new URL(req.url).searchParams.get('page') || '1', 10);//パラメータからページ番号を取得し、整数に変換。new URL(req.url)でURLをオブジェクトに変換してから取得する。
     //1ページ当たりの最大件数
     const limit = 30;
