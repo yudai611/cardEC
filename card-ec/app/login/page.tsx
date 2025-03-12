@@ -1,81 +1,58 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import * as z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "../../styles/signUp.css"
 import Link from 'next/link'
-type Schema = z.infer<typeof schema>
-
-//入力データの検証ルールを定義
-const schema = z.object({
-    email: z.string().email({ message: 'メールアドレスの形式ではありません。'}),
-    password: z.string().min(6, { message: '6文字以上入力する必要があります。'}),
-})
+import { signIn, useSession } from 'next-auth/react'
 
 //ログインページ
 const LoginPage = () => {
     const router = useRouter();
-    const [ loading, setLoading] = useState(false);
-    const [ message, setMessage] = useState('');
+    const [ userName, setUserName ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ error, setError] = useState('');
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        //初期値
-        defaultValues: { email: '', password: '' },
-        //入力検証
-        resolver: zodResolver(schema),
-    })
+    const { data: session } = useSession();
+    const user = session?.user;
+    console.log(user);
 
-    //送信
-    const onSubmit: SubmitHandler<Schema> = async (data) => {
-        setLoading(true)
+    useEffect(() => {
+        if(user) {
+            router.push("/");
+        }
+    },[user]);
 
-        try{
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signIn`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    email: data.email,
-                    password: data.password
-                })
-            })
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
 
-            const user = await res.json();
-            console.log(user)
-            
-            if(res.ok) {
-                router.push('/');
-            } else {
-                alert(res)
-            }
-        } catch(err) {
-            setMessage('エラーが発生しました。' + err)
-            return 
-        } finally {
-            setLoading(false);
-            router.refresh();
+        const res = await signIn('credentials', {
+            redirect: false,
+            userName,
+            password,
+        });
+
+        if(res?.ok) {
+            router.push("/");
+        } else {
+            setError(`ログインに失敗しました。${res?.error}`);
         }
     }
+
     return (
         <>
             <h2>ログイン</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <form onSubmit={(e) => handleSubmit(e)} className="form">
                 <label>
-                    メールアドレス<br />
+                    ユーザー名<br />
                     <input 
-                        type="email"
-                        id="email"
+                        type="text"
+                        id="name"
                         className="input"
-                        placeholder='メールアドレス'
-                        {...register('email', { required: true })}
+                        placeholder='ユーザー名'
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
                     />
-                    <div>{errors.email?.message}</div>
                 </label>
                 <br />
                 <label>
@@ -85,15 +62,13 @@ const LoginPage = () => {
                         id="password"
                         className="input"
                         placeholder='パスワード'
-                        {...register('password', { required: true })}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                      />
-                    <div>{errors.password?.message}</div>
                 </label>
                 <br />
                 <input type="submit" className="submit-btn" value="ログイン"/>
             </form>
-
-            {message && <div>{message}</div>}
 
             <Link href={"/"}>
                 パスワードを忘れた方はこちら
@@ -102,6 +77,7 @@ const LoginPage = () => {
             <Link href={"/"}>
                 アカウントを作成する
             </Link>
+            <div>{error}</div>
         </>
     )
 }
