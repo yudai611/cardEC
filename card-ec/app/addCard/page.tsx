@@ -8,6 +8,8 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { AddCardPagination } from "../components/addCardPagination"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { Card, User } from "../api/types/types"
 
 export default function AddCardPage() {
 
@@ -16,6 +18,8 @@ export default function AddCardPage() {
     const [ totalPages, setTotalPages ] = useState(1);//カードを表示するのに必要なページ数を管理
     const [ currentPage, setCurrentPage ] = useState(1);//現在のページ数を管理
     const searchParams = useSearchParams();
+    const { data: session } = useSession();
+    const user = session?.user as User;
 
     //初回レンダリング・パラメータが変更されたときに実行される。
     useEffect(() => {
@@ -24,7 +28,7 @@ export default function AddCardPage() {
          * @param page 現在のページ数
          */
         const fetchData = async (page: number) => {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/card?page=${page}`);//DBからカード情報を取得するAPIを叩く
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getCardAddCardPage?page=${page}`);//DBからカード情報を取得するAPIを叩く
 
             if(res.ok) {
                 const data = await res.json();
@@ -50,6 +54,21 @@ export default function AddCardPage() {
         setCurrentPage(page);
     };
 
+    //対象カードをDBに保存するAPIを叩く
+    const registerHandle = async (cardId: string) => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/registerCard`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                cardId: cardId,
+                userId: user.id
+            }),
+        });
+
+        const data = await res.json();
+        console.log(data);
+    }
+
     return (
         <main>
             <Link href={"/"} className="back">＜ トップページに戻る</Link>
@@ -62,23 +81,23 @@ export default function AddCardPage() {
             <ul className="card-list">
                 {cardData?.map((card) => (
                     <li className="card-item" key={card.cardId}>
-                    <div className="image-area">
-                        <Image
-                        className="card-image"
-                        src={card.cardImage}
-                        alt={card.cardName + card.rarity + card.cardId}
-                        width={100}
-                        height={140}
-                        />
-                    </div>
-                    <p>{`${card.cardName} 【${card.rarity}】`}</p>
-                    <div className="price-area">
-                        <p className="sale">{`販売${card.Sales_price}`}</p>
-                        <p className="purchase">{`買取${card.Purchase_price}`}</p>
-                    </div>
-                    <button className="add-btn">
-                        登録する
-                    </button>
+                        <div className="image-area">
+                            <Image
+                            className="card-image"
+                            src={card.cardImage}
+                            alt={card.cardName + card.rarity + card.cardId}
+                            width={100}
+                            height={140}
+                            />
+                        </div>
+                        <p>{`${card.cardName} 【${card.rarity}】`}</p>
+                        <div className="price-area">
+                            <p className="sale">{`販売${card.Sales_price}`}</p>
+                            <p className="purchase">{`買取${card.Purchase_price}`}</p>
+                        </div>
+                        <button className="add-btn" onClick={() => registerHandle(card.cardId)}>
+                            登録する
+                        </button>
                     </li>
                 ))}
             </ul>
