@@ -3,19 +3,20 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
-    const { email, password } = await req.json();
+    const { userName, password } = await req.json();
 
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
-                email: email
+                name: userName
             }
         });
     
         if(!user) {
             return NextResponse.json({ error: 'ユーザーが見つかりませんでした。'});
         }
-    
+        
+        //送られてきたパスワードとDBのハッシュ化されたパスワードを比較する
         const isPasswordCorrect = await bcrypt.compare(password, user.password!);
     
         if(!isPasswordCorrect) {
