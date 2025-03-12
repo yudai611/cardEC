@@ -10,11 +10,13 @@ export async function POST(req: Request, res: Response) {
             return NextResponse.json({ message: 'Bad Request'}, { status: 405})
         }
 
-        const { name, email, password } = await req.json();
+        const { userName, password } = await req.json();
 
-        //送られていたメールアドレススと一致するメールアドレスがDBに存在するかどうか
-        const existingUser = await prisma.user.findUnique({
-            where: { email }
+        //送られてきたユーザー名と一致するユーザー名がDBに存在するかどうか
+        const existingUser = await prisma.user.findFirst({
+            where: { 
+                name: userName ,
+            },
         });
         //存在する場合
         if(existingUser) {
@@ -27,13 +29,12 @@ export async function POST(req: Request, res: Response) {
         //userデーブルにレコードを作成
         const user = await prisma.user.create({
             data: {
-                email: email,
-                name: name,
+                name: userName,
                 password: hashedPassword,
                 image: '',
                 emailVerified: new Date()
             },
-        })
+        });
 
         return NextResponse.json({ user }, { status: 201 })
     } catch (err: any) {
