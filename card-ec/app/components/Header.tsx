@@ -3,8 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import "../../styles/header.css"
+import { useSession } from "next-auth/react";
 
 export default function Header() {
+
+    const { data: session } = useSession();
+    const user = session?.user;
 
     return (
         <>
@@ -26,18 +30,29 @@ export default function Header() {
                     </div>
                     <div className="header-right">
                         <div className="login-area">
+                            {user ?
                             <Link
-                                href={"/login"}
-                                className="login-btn btn"
-                            >
-                                ログイン
-                            </Link>
-                            <Link
-                                href={`/signUp`}
+                                href={"/"}
                                 className="btn"
                             >
-                                新規登録
+                                ログアウト
                             </Link>
+                            :
+                            <>
+                                <Link
+                                    href={"/login"}
+                                    className="login-btn btn"
+                                >
+                                    ログイン
+                                </Link>
+                                <Link
+                                    href={`/signUp`}
+                                    className="btn"
+                                >
+                                    新規登録
+                                </Link>
+                            </>
+                        }
                         </div>
                     </div>
                 </div>
