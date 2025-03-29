@@ -1,10 +1,49 @@
 'use client'
 
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Header from "./components/Header"
 import "../styles/page.css"
+import { User, Card } from './api/types/types'
 
 export default function Home() {
+
+  const { data: session, status } = useSession();
+  const [ user, setUser] = useState(session?.user as User);
+
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user?.id) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getRegisterCard`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: user.id
+            }),
+          });
+
+          if(!res.ok) {
+            throw new Error(`Failed to fetch: ${res.status}`)
+          }
+  
+          const cardsData = await res.json();
+          console.log(cardsData);
+
+        } catch(e) {
+          console.error('Error fetching cards:', e);
+        }
+        
+      }
+    }
+
+    fetchData();
+
+  },[user]);
+
   return (
     <>
       <Header />
