@@ -15,8 +15,6 @@ export const nextAuthOptions: NextAuthOptions = {
                 password: { label: 'パスワード', type: 'password'}
             },
             async authorize(credentials) {
-
-                console.log(credentials);
                 //ユーザー名またはパスワードが空の場合
                 if(!credentials?.userName || !credentials.password) {
                     throw new Error('ユーザー名とパスワードは必須入力です。');
@@ -40,8 +38,6 @@ export const nextAuthOptions: NextAuthOptions = {
                 if(!isCorrectPassword) {
                     throw new Error('Incorrect password')
                 }
-
-                console.log(user);
                 return user
             },
         }),
