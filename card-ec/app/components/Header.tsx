@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import "../../styles/header.css"
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Header() {
 
@@ -32,7 +32,7 @@ export default function Header() {
                         <div className="login-area">
                             {user ?
                             <Link
-                                href={"/"}
+                                href={"/api/auth/signout?callbackUrl=/"}//nextauthがデフォルトで用意してくれているサインイン用のAPIを使用する。
                                 className="btn"
                             >
                                 ログアウト
