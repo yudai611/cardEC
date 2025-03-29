@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]  // multiSchema プレビュー機能を有効にする
 }
 
 datasource db {
@@ -53,6 +54,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   password      String?
+  
+  User_Card User_Card[]
+
   @@map("users")
 }
  
@@ -74,11 +78,16 @@ model Cards {
   cardImage       String
   created_at      DateTime  @default(now())
   updated_at      DateTime  @default(now())
+  userCards       User_Card[] // 逆方向のリレーション
 }
 
 model User_Card {
-  userId      String    @id @default(cuid())
-  cardId      String
+  userCardId  String      @id @default(cuid())
+  userId      String   
+  cardId      String   
   count       String
   acquired_at DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card        Cards     @relation(fields: [cardId], references: [cardId], onDelete: Cascade)
 }
