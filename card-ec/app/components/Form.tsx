@@ -2,6 +2,7 @@
 
 import "../../styles/form.css"
 import React, { useState } from "react"
+import { Card } from "../api/types/types"
 
 export const Form = ( {onServerResponse}:  { onServerResponse: (cardsData: Card[]) => void }) => {
     const [value, setValue] = useState("");
