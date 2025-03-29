@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 
 
 export async function POST(req: Request, res: Response) {
-    console.log('a')
     try {
         if(req.method !== 'POST') {
             return NextResponse.json({ message: 'Bad Request'}, { status: 405})
